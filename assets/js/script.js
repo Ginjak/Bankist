@@ -166,6 +166,35 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+    // Update Ui
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    // Delete account
+    accounts.splice(index, 1);
+    //Hide Ui
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin === '';
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -181,7 +210,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 /////////////////////////////////////////////////
 
 // Lectures info
-/*
+
 // const withdrawals = movements.filter(mov => mov < 0);
 // console.log(withdrawals);
 
@@ -225,7 +254,6 @@ const test = movements.reduce((acc, mov, i) => {
 //   .reduce((acc, mov) => acc + mov, 0);
 // console.log(totalDepositsUSD);
 
-
 const firstWithdrawal = movements.find(mov => mov < 0);
 console.log(movements);
 console.log(firstWithdrawal);
@@ -241,4 +269,49 @@ for (const acc of accounts) {
 }
 
 console.log(findAccount);
-*/
+
+console.log(movements);
+// Equality
+console.log(movements.includes(-130));
+
+// Some: Condition
+const anyDepostis = movements.some(mov => mov > 0);
+console.log(anyDepostis);
+
+// Every method
+console.log(movements.every(mov => mov > 0));
+console.log(account4.movements.every(mov => mov > 0));
+
+// Seperate callback
+
+const deposit = mov => mov > 0;
+console.log(movements.some(deposit));
+console.log(movements.every(deposit));
+console.log(movements.filter(deposit));
+
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+console.log(arr.flat());
+
+const arrDeep = [[[1, 2], 3], [4, [5, 6]], 7, 8];
+
+console.log(arrDeep.flat(2));
+
+const accountMovements = accounts.map(acc => acc.movements);
+const allMovements = accountMovements.flat();
+console.log(allMovements);
+// const overlBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+
+// Flat
+const overallBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+
+console.log(overallBalance);
+
+// Flat map
+
+const overallBalanceFlatmap = accounts
+  .flatMap()
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overallBalanceFlatmap);
