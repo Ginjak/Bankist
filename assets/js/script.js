@@ -166,13 +166,38 @@ const updateUI = function (acc) {
   calcDisplayBalance(acc);
   calcDisplaySummary(acc);
 };
+
+const startLogOutTime = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    // In each call, print the remaining to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When 0 seconds, stop time and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+    // Decrease 1 sec
+    time--;
+  };
+  // Set time to 5 minutes
+  let time = 30;
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 // Event handler
-let currentAccount;
+let currentAccount, timer;
 
 // Fake always logged in
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submiting
@@ -213,6 +238,8 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fiels
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+    if (timer) clearInterval(timer);
+    timer = startLogOutTime();
     // Update Ui
     updateUI(currentAccount);
   }
@@ -248,14 +275,16 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update Ui
-    updateUI(currentAccount);
+      // Update Ui
+      updateUI(currentAccount);
+    }, 2500);
   }
   inputLoanAmount.value = '';
 });
@@ -672,6 +701,7 @@ future.setFullYear(2040); // Set future Year, month, day etc
 console.log(future);
 */
 
+/*
 // Operations with dates
 
 const future = new Date(2037, 10, 19, 15, 23);
@@ -682,7 +712,9 @@ const calcDaysPassed = (date1, date2) =>
 
 const days1 = calcDaysPassed(new Date(2037, 3, 14), new Date(2037, 3, 24));
 console.log(days1);
+*/
 
+/*
 // Internationalizing Numbers (Intl)
 
 const num = 38874764.23;
@@ -697,3 +729,32 @@ console.log('US: ', new Intl.NumberFormat('en-US', options).format(num));
 console.log('Germany: ', new Intl.NumberFormat('de-DE', options).format(num));
 console.log('Syria: ', new Intl.NumberFormat('ar-SY', options).format(num));
 console.log('Browser: ', new Intl.NumberFormat(navigator.language).format(num));
+*/
+
+/*
+// Timers: setTimeout and setIntervals
+
+// Set timeout - delay 3 sec.
+
+const ingredients = ['olivers', 'spinach'];
+const pizzaTimer = setTimeout(
+  (ing1, ign2) => {
+    console.log(`Here is your pizza ${ing1} ${ign2}`);
+  },
+  3000,
+  ...ingredients // destruct array to pass values like 'val1', 'val2', 'val3' etc...
+);
+console.log('This code is executed before time out');
+// Cancel setTimeout
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+// setInterval
+
+setInterval(() => {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
+  console.log(`${hours}:${minutes}:${seconds}`);
+}, 1000);
+*/
