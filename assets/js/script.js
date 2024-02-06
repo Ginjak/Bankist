@@ -135,6 +135,21 @@ const updateUI = function (acc) {
 };
 // Event handler
 let currentAccount;
+
+// Fake always logged in
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
+const now = new Date();
+const day = `${now.getDate()}`.padStart(2, 0);
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const year = now.getFullYear();
+const hours = now.getHours();
+const minutes = now.getMinutes();
+labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`;
+// day/month/year
+
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submiting
   e.preventDefault();
@@ -445,7 +460,7 @@ console.log(convertTitleCase('this is a nice title'));
 console.log(convertTitleCase('this is a LOND title but not too long'));
 console.log(convertTitleCase('and here is another title with an EXAMPLE'));
 */
-
+/*
 // Working with Dates
 console.log(typeof '23');
 console.log(typeof +'23');
@@ -502,3 +517,102 @@ console.log(Math.floor(23.7));
 // Rounding decimals
 console.log((2.7).toFixed(0)); // Return always a string
 console.log(+(2.735684).toFixed(2));
+
+// Remainder use for even or odd calculations
+console.log(5 % 2);
+console.log(5 / 2); //5 = 2 * 2 + 1
+
+console.log(6 % 2); // 0
+console.log(6 / 2); // 3 = 3 * 2
+
+console.log(7 % 2); // 1
+console.log(7 / 2); // 3.5
+
+const isEven = n => n % 2 === 0;
+console.log(isEven(8)); // True
+console.log(isEven(23)); // Flase
+console.log(isEven(514)); // True
+
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+    if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+    // 0, 2, 4, 6...
+    if (i % 3 === 0) row.style.backgroundColor = 'blue';
+    // 0, 3, 6, 9, 12...
+  });
+});
+
+// Numeric Seperators
+// 287,460,000,000
+// _ can be placed only between number, can't be after a .
+const diameter = 287_460_000_000;
+console.log(diameter);
+
+const priceCents = 345_99;
+console.log(priceCents);
+
+const transferFree1 = 15_00;
+const transferFree2 = 1_500;
+
+// _ can't be in the string! Will return Nan
+// console.log(Number('2300_1'));
+
+// Working with BigInt
+
+console.log(2 ** 53 - 1); // Biggest number can JS represent safely
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(2 ** 53 + 1); // Unsafe number
+console.log(2 ** 53 + 2); // Unsafe number
+
+console.log(4846549845468454684344884684864n);
+console.log(BigInt(48465498));
+
+// Operations with BigInt
+console.log(10000n + 10000n);
+console.log(431843518131651531835118n * 100000000000n);
+
+const huge = 948435413161846431123156484684683n;
+const num = 23;
+// Can't mix regular number with bigint, will throw an erorr
+// console.log(huge * num);
+console.log(huge * BigInt(num));
+
+// Divisions
+console.log(10n / 3n); // Will cut decimal value
+console.log(10 / 3);
+
+// Creating Dates
+
+// Create a date (4 ways)
+/* const now = new Date();
+console.log(now);
+
+console.log(new Date('Feb 06 2024 14:00:40'));
+console.log(new Date('December 24, 2015'));
+console.log(new Date(2037, 10, 19, 15, 23, 5)); // Second parameter is month and it starts from 0, 10 is November
+console.log(new Date(2037, 10, 31)); // Of motnh has nonly 30 days it will show December 1st then
+
+console.log(new Date(0));
+*/
+// Working with dates
+/*
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future);
+console.log(future.getFullYear()); // Year
+console.log(future.getMonth()); // Month
+console.log(future.getDate()); // Day of the month
+console.log(future.getDay()); // Day of the week
+console.log(future.getHours()); // Hours
+console.log(future.getMinutes()); // Minutes
+console.log(future.getSeconds()); // Seconds
+
+console.log(future.toISOString());
+console.log(future.getTime()); // From 1970 Jan 1
+
+console.log(new Date(2142256980000));
+
+console.log(Date.now()); // Gives todays time stamp
+
+future.setFullYear(2040); // Set future Year, month, day etc
+console.log(future);
+*/
